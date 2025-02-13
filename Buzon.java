@@ -21,7 +21,7 @@ public class Buzon {
 
     public synchronized Producto retirar() throws InterruptedException {
         while (productos.isEmpty()) {
-            System.out.println(Thread.currentThread().getName() + "esperando para retirar. Buzón vacio. ");
+            System.out.println(Thread.currentThread().getName() + " esperando para retirar. Buzón vacio. ");
             wait();
         }
         Producto prod = productos.poll();

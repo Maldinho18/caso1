@@ -9,8 +9,8 @@ public class Main{
         Buzon deposito = new Buzon(Integer.MAX_VALUE);
         
         for (int i = 0; i < numOperarios; i++){
-            new Productor(buzonRevision, buzonReproceso).start();
-            new Calidad(buzonRevision, buzonReproceso, deposito, numProductos/10).start();
+            new Productor(buzonRevision, buzonReproceso, i + 1).start();
+            new Calidad(buzonRevision, buzonReproceso, deposito, numProductos/10, i + 1).start();
         }
     }
 }

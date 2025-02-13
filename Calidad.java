@@ -7,12 +7,13 @@ public class Calidad extends Thread {
     private int productosAprobados = 0;
     private final int totalProductos;
 
-    public Calidad(Buzon buzonRevision, Buzon buzonReproceso, Buzon deposito, int totalProductos) {
+    public Calidad(Buzon buzonRevision, Buzon buzonReproceso, Buzon deposito, int totalProductos, int id) {
         this.buzonRevision = buzonRevision;
         this.buzonReproceso = buzonReproceso;
         this.deposito = deposito;
         this.maxFallos = totalProductos / 10;
         this.totalProductos = totalProductos;
+        this.setName("Calidad " + id);
     }
 
     public void run() {
@@ -20,18 +21,18 @@ public class Calidad extends Thread {
             while(true){
                 Thread.sleep(100);
                 Producto prod = buzonRevision.retirar();
-                System.out.println("Calidad " + Thread.currentThread().getId() + " ha recibido el producto " + prod.getId());
+                System.out.println(getName() + " ha recibido el producto " + prod.getId());
 
                 if (fallos < maxFallos && prod.getId() % 7 == 0) {
                     prod.setAprobado(false);
                     buzonReproceso.depositar(prod);
                     fallos++;
-                    System.out.println("Producto " + Thread.currentThread().getId() + " rechazado y enviado a reproceso " );
+                    System.out.println(getName() + " rechazado y enviado a reproceso " );
                 } else {
                     prod.setAprobado(true);
                     deposito.depositar(prod);
                     productosAprobados++;
-                    System.out.println("Producto " + Thread.currentThread().getId() + " aprobado y enviado al deposito " );
+                    System.out.println(getName() + " aprobado y enviado al deposito " );
 
                     if (productosAprobados >= totalProductos){
                         System.out.println("Calidad: Se han aprobado todos los productos. Enviando FIN. ");

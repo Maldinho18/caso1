@@ -1,11 +1,12 @@
 public class Productor extends Thread {
     private final Buzon buzonRevision;
     private final Buzon buzonReproceso;
-    private int contador = 0;
+    private static int contador = 0;
 
-    public Productor(Buzon buzonRevision, Buzon buzonReproceso) {
+    public Productor(Buzon buzonRevision, Buzon buzonReproceso, int id) {
         this.buzonRevision = buzonRevision;
         this.buzonReproceso = buzonReproceso;
+        this.setName("Productor " + id);
     }
 
     public void run(){
@@ -16,14 +17,14 @@ public class Productor extends Thread {
                     if (!buzonReproceso.isEmpty()){
                         prod = buzonReproceso.retirar();
                         if (prod.getId() == -1){
-                            System.out.println("Productor " + Thread.currentThread().getId() + " recibió FIN. Terminando");
+                            System.out.println(getName() + " recibió FIN. Terminando");
                             break;
                         }
                     } else {
                         prod = new Producto(++contador);
                     }
                 }
-                System.out.println("Productor " + Thread.currentThread().getId() + " ha generado el producto " + prod.getId()); 
+                System.out.println(getName() + " ha generado el producto " + prod.getId()); 
                 buzonRevision.depositar(prod);
             }   
         } catch (InterruptedException e) {
