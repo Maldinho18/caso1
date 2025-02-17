@@ -6,13 +6,15 @@ public class Calidad extends Thread {
     private int fallos = 0;
     private int productosAprobados = 0;
     private final int totalProductos;
+    private final int numOperarios;
 
-    public Calidad(Buzon buzonRevision, Buzon buzonReproceso, Buzon deposito, int totalProductos, int id) {
+    public Calidad(Buzon buzonRevision, Buzon buzonReproceso, Buzon deposito, int totalProductos, int id, int numOperarios) {
         this.buzonRevision = buzonRevision;
         this.buzonReproceso = buzonReproceso;
         this.deposito = deposito;
         this.maxFallos = totalProductos / 10;
         this.totalProductos = totalProductos;
+        this.numOperarios = numOperarios;
         this.setName("Calidad " + id);
     }
 
@@ -36,7 +38,9 @@ public class Calidad extends Thread {
 
                     if (productosAprobados >= totalProductos){
                         System.out.println("Calidad: Se han aprobado todos los productos. Enviando FIN. ");
-                        buzonReproceso.depositar(new Producto(-1));
+                        for (int i = 0; i < numOperarios; i++){
+                            buzonReproceso.depositar(new Producto(-1));
+                        }
                         break;
                     }
                 } 

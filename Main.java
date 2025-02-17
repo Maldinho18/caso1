@@ -21,7 +21,7 @@ public class Main{
         
         for (int i = 0; i < numOperarios; i++){
             new Productor(buzonRevision, buzonReproceso, i + 1).start();
-            new Calidad(buzonRevision, buzonReproceso, deposito, numProductos, i + 1).start();
+            new Calidad(buzonRevision, buzonReproceso, deposito, numProductos, i + 1, numOperarios).start();
         }
     }
 }
