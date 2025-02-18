@@ -24,8 +24,11 @@ public class Productor extends Thread {
                         prod = new Producto(++contador);
                     }
                 }
-                System.out.println(getName() + " ha generado el producto " + prod.getId()); 
+                System.out.println(getName() + " ha producido el producto " + prod.getId());
                 buzonRevision.depositar(prod);
+                synchronized (buzonRevision){
+                    buzonRevision.notifyAll();
+                }
             }   
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
